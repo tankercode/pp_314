@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Create user page</title>
+</head>
+<body>
+<H1>Create user page</H1>
+
+</div>
+<div class="col-1"><a class="nav-link active text-white-50" href="/logout">Logout</a></div>
+</div>
+
+<form th:method="POST" th:action="@{/}" th:object="${user}">
+
+  <div>
+    <label>Name:</label>
+    <input type="text" th:field="*{name}"/>
+  </div>
+
+  <div>
+    <label>Last Name:</label>
+    <input type="text" th:field="*{lastname}"/>
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <input type="text" th:field="*{email}"/>
+  </div>
+
+  <div>
+    <label>Age:</label>
+    <input type="text" th:field="*{age}"/>
+  </div>
+
+  <div>
+    <label>Password:</label>
+    <input type="password" th:field="*{pass}"/>
+  </div>
+
+  <div>
+    <button type="submit">Add User</button>
+  </div>
+</form>
+
+</body>
+</html>
