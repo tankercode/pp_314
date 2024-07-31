@@ -55,19 +55,25 @@ public class UsersController {
     }
 
     @GetMapping(value = "/admin/main")
-    public String showUsersTable(Model model) {
+    public String showUsersTable(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("users", usersServiceImp.findAll());
+        model.addAttribute("currentUser", user);
         return "/admin/main";
     }
 
     @GetMapping(value = "/admin/new")
-    public String showCreateUserPage(@ModelAttribute("user") User user) {
+    public String showCreateUserPage(@ModelAttribute("user") User user,
+                                     @AuthenticationPrincipal User currentUser,
+                                     Model model) {
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("allRoles", usersServiceImp.findAllRoles());
         return "/admin/new";
     }
 
-    @PostMapping
-    public String createNewUser(@ModelAttribute("user") User user) {
-            usersServiceImp.save(user);
+    @PostMapping(value = "/admin/new")
+    public String createNewUser(@ModelAttribute("user") User user,
+    @RequestParam(value = "roleIds") int[] roles) {
+        usersServiceImp.save(user, roles);
         return "redirect:/admin/main";
     }
 
@@ -83,9 +89,7 @@ public class UsersController {
         usersServiceImp.update(id, user);
         return "redirect:/admin/main";
     }
-
-    @GetMapping(value = "/admin/delete")
-    @DeleteMapping()
+    @DeleteMapping(value = "/admin/delete")
     public String delete(@RequestParam("id") int id) {
         usersServiceImp.deleteUserById(id);
         return "redirect:/admin/main";

@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UsersRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,12 @@ public class UsersServiceImp implements UserDetailsService, UserService {
         return usersRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<Role> findAllRoles(){
+        return roleRepository.findAll();
+    }
+
     @Override
     public void save(User user) {
 
@@ -49,6 +56,19 @@ public class UsersServiceImp implements UserDetailsService, UserService {
         } else {
             usersRepository.save(user);
         }
+
+    }
+
+    @Override
+    public void save(User user, int[] rolesIds) {
+
+        List<Role> roles = new ArrayList<>();
+        for (int rolesId : rolesIds) {
+            roles.add(roleRepository.getById(rolesId));
+        }
+
+        user.setRole(roles);
+        usersRepository.save(user);
 
     }
 

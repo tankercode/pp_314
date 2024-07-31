@@ -11,9 +11,13 @@ public interface UserService {
 
     List<User> findAll();
 
+    List<Role> findAllRoles();
+
     Optional<User> findOne(int id);
 
     void save(User user) throws RoleNotFoundException;
+
+    void save(User user, int[] rolesIds) throws RoleNotFoundException;
 
     void save(Role role);
 
