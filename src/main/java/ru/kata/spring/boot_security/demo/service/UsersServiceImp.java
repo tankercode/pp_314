@@ -86,6 +86,19 @@ public class UsersServiceImp implements UserDetailsService, UserService {
     }
 
     @Override
+    public void update(User tmp, int[]  rolesIds) {
+
+        List<Role> roles = new ArrayList<>();
+        for (int rolesId : rolesIds) {
+            roles.add(roleRepository.getById(rolesId));
+        }
+
+        tmp.setRole(roles);
+        usersRepository.save(tmp);
+
+    }
+
+    @Override
     public void deleteUserById(int id) {
         usersRepository.deleteById(id);
     }

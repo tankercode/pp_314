@@ -23,5 +23,7 @@ public interface UserService {
 
     void update(int id, User tmp);
 
+    void update(User tmp, int[] rolesIds);
+
     void deleteUserById(int id);
 }

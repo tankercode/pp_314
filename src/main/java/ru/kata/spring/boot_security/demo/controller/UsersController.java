@@ -58,6 +58,7 @@ public class UsersController {
     public String showUsersTable(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("users", usersServiceImp.findAll());
         model.addAttribute("currentUser", user);
+        model.addAttribute("allRoles", usersServiceImp.findAllRoles());
         return "/admin/main";
     }
 
@@ -85,8 +86,8 @@ public class UsersController {
 
     @PatchMapping("/admin/edit")
     public String update(@ModelAttribute("user") User user,
-                         @RequestParam("id") int id) {
-        usersServiceImp.update(id, user);
+                         @RequestParam("roles") int[] rolesIds) {
+        usersServiceImp.update(user, rolesIds);
         return "redirect:/admin/main";
     }
     @DeleteMapping(value = "/admin/delete")
