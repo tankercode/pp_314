@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.configs;
+package ru.kata.spring.boot_security.demo.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.services.UsersService;
+import ru.kata.spring.boot_security.demo.service.UsersServiceImp;
 
 @Configuration
 @EnableWebSecurity
@@ -17,7 +17,7 @@ import ru.kata.spring.boot_security.demo.services.UsersService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final UsersService usersService;
+    private final UsersServiceImp usersServiceImp;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usersService);
+        auth.userDetailsService(usersServiceImp);
     }
 
     @Bean
