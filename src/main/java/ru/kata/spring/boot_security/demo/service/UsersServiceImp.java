@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -18,10 +19,11 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UsersServiceImp implements UserDetailsService, UserService {
+public class UsersServiceImp implements  UserService {
 
     private final UsersRepository usersRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -47,6 +49,7 @@ public class UsersServiceImp implements UserDetailsService, UserService {
         if (user.getRole() == null) {
             if (roleRepository.findByType("ROLE_USER").isPresent()) {
                 user.setRole(List.of(roleRepository.findByType("ROLE_USER").get()));
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
                 usersRepository.save(user);
             } else {
                 Role role_default = new Role();
@@ -54,6 +57,7 @@ public class UsersServiceImp implements UserDetailsService, UserService {
                 save(role_default);
             }
         } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             usersRepository.save(user);
         }
 
@@ -68,6 +72,7 @@ public class UsersServiceImp implements UserDetailsService, UserService {
         }
 
         user.setRole(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
 
     }
@@ -80,12 +85,6 @@ public class UsersServiceImp implements UserDetailsService, UserService {
     }
 
     @Override
-    public void update(int id, User tmp) {
-        tmp.setId(id);
-        usersRepository.save(tmp);
-    }
-
-    @Override
     public void update(User tmp, int[]  rolesIds) {
 
         List<Role> roles = new ArrayList<>();
@@ -94,6 +93,7 @@ public class UsersServiceImp implements UserDetailsService, UserService {
         }
 
         tmp.setRole(roles);
+        tmp.setPassword(passwordEncoder.encode(tmp.getPassword()));
         usersRepository.save(tmp);
 
     }
@@ -101,13 +101,6 @@ public class UsersServiceImp implements UserDetailsService, UserService {
     @Override
     public void deleteUserById(int id) {
         usersRepository.deleteById(id);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return usersRepository.findByName(username).orElseThrow(
-                () -> new UsernameNotFoundException(String.format("Пользователь '%s' не найден", username)));
     }
 
 

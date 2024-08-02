@@ -29,8 +29,7 @@ public class User implements UserDetails {
 
     private String email;
 
-    @Column(name = "password")
-    private String pass;
+    private String password;
 
     private int age;
 
@@ -47,16 +46,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRole();
-    }
-
-    public void setPass(String pass) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.pass = bCryptPasswordEncoder.encode(new StringBuilder(pass));
-    }
-
-    @Override
-    public String getPassword() {
-        return getPass();
     }
 
     @Override

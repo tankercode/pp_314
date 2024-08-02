@@ -21,8 +21,6 @@ public interface UserService {
 
     void save(Role role);
 
-    void update(int id, User tmp);
-
     void update(User tmp, int[] rolesIds);
 
     void deleteUserById(int id);
