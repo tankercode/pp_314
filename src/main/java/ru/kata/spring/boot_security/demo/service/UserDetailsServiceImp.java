@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.repository.UsersRepository;
 public class UserDetailsServiceImp implements UserDetailsService {
 
     private final UsersRepository usersRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

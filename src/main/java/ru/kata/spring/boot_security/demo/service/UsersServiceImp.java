@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UsersServiceImp implements  UserService {
+public class UsersServiceImp implements UserService {
 
     private final UsersRepository usersRepository;
     private final RoleRepository roleRepository;
@@ -36,7 +36,7 @@ public class UsersServiceImp implements  UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Role> findAllRoles(){
+    public List<Role> findAllRoles() {
         return roleRepository.findAll();
     }
 
@@ -82,7 +82,7 @@ public class UsersServiceImp implements  UserService {
     }
 
     @Override
-    public void update(User tmp, int[]  rolesIds) {
+    public void update(User tmp, int[] rolesIds) {
 
         List<Role> roles = new ArrayList<>();
         for (int rolesId : rolesIds) {
